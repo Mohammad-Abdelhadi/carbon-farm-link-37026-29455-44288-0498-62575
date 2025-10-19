@@ -118,8 +118,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setSession(null);
   };
 
-  const connectWallet = (accountId: string, privateKey: string) => {
+  const connectWallet = async (accountId: string, privateKey: string) => {
     if (!user) return;
+    
+    // Save wallet to database
+    await supabase
+      .from("user_roles")
+      .update({ wallet_address: accountId })
+      .eq("user_id", user.id);
     
     const updatedUser = { ...user, accountId, privateKey };
     setUser(updatedUser);

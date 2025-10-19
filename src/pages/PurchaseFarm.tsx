@@ -17,6 +17,7 @@ interface Farm {
   tons: number;
   price_per_ton: number;
   user_id: string;
+  token_id: string;
 }
 
 const PurchaseFarm = () => {
@@ -70,12 +71,14 @@ const PurchaseFarm = () => {
 
     setFarm(data as Farm);
 
-    // Get farmer's wallet
-    const walletData = JSON.parse(
-      localStorage.getItem(`wallet_${data.user_id}`) || "{}"
-    );
+    // Get farmer's wallet from database
+    const { data: roleData, error: roleError } = await supabase
+      .from("user_roles")
+      .select("wallet_address")
+      .eq("user_id", data.user_id)
+      .single();
     
-    if (!walletData.accountId) {
+    if (roleError || !roleData?.wallet_address) {
       toast({
         title: "خطأ",
         description: "المزارع لم يربط محفظته بعد",
@@ -85,7 +88,7 @@ const PurchaseFarm = () => {
       return;
     }
 
-    setFarmerAccountId(walletData.accountId);
+    setFarmerAccountId(roleData.wallet_address);
     setLoading(false);
   };
 
@@ -122,12 +125,12 @@ const PurchaseFarm = () => {
 
       if (purchaseError) throw purchaseError;
 
-      // Transfer HBAR from investor to farmer
+      // Transfer tokens from investor to farmer using farm's token_id
       const transactionId = await transferTokens(
         user.accountId,
         user.privateKey,
         farmerAccountId,
-        "0.0.48", // HBAR token ID
+        farm.token_id,
         totalCost
       );
 
