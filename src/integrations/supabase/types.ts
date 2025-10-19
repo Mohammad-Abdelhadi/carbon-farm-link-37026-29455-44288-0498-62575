@@ -14,16 +14,196 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      farmer_nfts: {
+        Row: {
+          created_at: string | null
+          id: string
+          investor_count: number | null
+          minted_at: string | null
+          nft_level_id: string
+          token_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          investor_count?: number | null
+          minted_at?: string | null
+          nft_level_id: string
+          token_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          investor_count?: number | null
+          minted_at?: string | null
+          nft_level_id?: string
+          token_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "farmer_nfts_nft_level_id_fkey"
+            columns: ["nft_level_id"]
+            isOneToOne: false
+            referencedRelation: "nft_levels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      farms: {
+        Row: {
+          created_at: string
+          farm_name: string
+          id: string
+          price_per_ton: number
+          status: string | null
+          token_id: string
+          tons: number
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          farm_name: string
+          id?: string
+          price_per_ton?: number
+          status?: string | null
+          token_id: string
+          tons: number
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          farm_name?: string
+          id?: string
+          price_per_ton?: number
+          status?: string | null
+          token_id?: string
+          tons?: number
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      nft_levels: {
+        Row: {
+          benefits: string | null
+          created_at: string | null
+          id: string
+          image_url: string | null
+          investors_required: number
+          level: number
+          name: string
+          rarity: string
+        }
+        Insert: {
+          benefits?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          investors_required: number
+          level: number
+          name: string
+          rarity: string
+        }
+        Update: {
+          benefits?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          investors_required?: number
+          level?: number
+          name?: string
+          rarity?: string
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          amount: number
+          created_at: string | null
+          farm_id: string
+          hedera_transaction_id: string | null
+          id: string
+          investor_id: string
+          price_per_ton: number
+          status: string | null
+          total_cost: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          farm_id: string
+          hedera_transaction_id?: string | null
+          id?: string
+          investor_id: string
+          price_per_ton: number
+          status?: string | null
+          total_cost: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          farm_id?: string
+          hedera_transaction_id?: string | null
+          id?: string
+          investor_id?: string
+          price_per_ton?: number
+          status?: string | null
+          total_cost?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_farm_id_fkey"
+            columns: ["farm_id"]
+            isOneToOne: false
+            referencedRelation: "farms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "farmer" | "investor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +330,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "farmer", "investor"],
+    },
   },
 } as const

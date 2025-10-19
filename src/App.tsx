@@ -13,6 +13,8 @@ import Auth from "./pages/Auth";
 import ConnectWallet from "./pages/ConnectWallet";
 import SeedData from "./pages/SeedData";
 import NFTGallery from "./pages/NFTGallery";
+import PaymentHistory from "./pages/PaymentHistory";
+import PurchaseFarm from "./pages/PurchaseFarm";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/nft-gallery" element={<NFTGallery />} />
+            <Route path="/payment-history" element={<PaymentHistory />} />
+            <Route path="/purchase/:farmId" element={<PurchaseFarm />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

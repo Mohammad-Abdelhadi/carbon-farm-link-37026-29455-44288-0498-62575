@@ -11,11 +11,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { FarmerNFTBadge } from "@/components/FarmerNFTBadge";
+import { useNFTMinting } from "@/hooks/useNFTMinting";
 
 const Farmer = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user, isWalletConnected, loading } = useAuth();
+  const { checkAndMintNFTs } = useNFTMinting();
   const [actionLoading, setActionLoading] = useState(false);
   const tokenId = localStorage.getItem("agripulse_token_id") || import.meta.env.VITE_TOKEN_ID || "0.0.4956206";
   

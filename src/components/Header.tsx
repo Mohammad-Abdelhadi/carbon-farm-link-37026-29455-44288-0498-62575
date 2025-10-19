@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Sprout, LogOut, Wallet, Award } from "lucide-react";
+import { Sprout, LogOut, Wallet, Award, History } from "lucide-react";
 
 const Header = () => {
   const { user, logout, isWalletConnected } = useAuth();
@@ -27,6 +27,13 @@ const Header = () => {
               <Link to="/marketplace">
                 <Button variant={isActive("/marketplace") ? "secondary" : "ghost"} size="sm">
                   السوق
+                </Button>
+              </Link>
+              
+              <Link to="/payment-history">
+                <Button variant={isActive("/payment-history") ? "secondary" : "ghost"} size="sm" className="gap-2">
+                  <History className="h-4 w-4" />
+                  المدفوعات
                 </Button>
               </Link>
               
